@@ -1,40 +1,66 @@
 <?php
 
 return [
-	# Account credentials from developer portal
+
+    /*
+    |--------------------------------------------------------------------------
+    | Account credentials from developer portal
+    |--------------------------------------------------------------------------
+    |
+    | This data is provided by the developer console
+    | at developer.paypal.com
+    |
+    */
 	'Account' => [
-		//'ClientId' => 'AVJx0RArQzkCCsWC0evZi1SsoO4gxjDkkULQBdmPNBZ4fc14AROUq-etMEY',
-		//'ClientSecret' => 'EH5F0BAxqonVnP8M4a0c6ezUHq-UT-CWfGciPNQdUlTpWPkNyuS6eDN-tpA',
+		'ClientId'     => env('PAYPAL_CLIENT_ID'),
+		'ClientSecret' => env('PAYPAL_CLIENT_SECRET'),
 	],
 
-	# Connection Information
+    /*
+    |--------------------------------------------------------------------------
+    | Connection Information
+    |--------------------------------------------------------------------------
+    */
 	'Http' => [
-		// 'ConnectionTimeOut' => 30,
-		'Retry' => 1,
-		//'Proxy' => 'http://[username:password]@hostname[:port][/path]',
+		'ConnectionTimeOut' => env('PAYPAL_HTTP_TIMEOUT', 30),
+		'Retry'             => env('PAYPAL_HTTP_RETRY', 1),
+		// 'Proxy'             => env('PAYPAL_HTTP_PROXY', 'http://[username:password]@hostname[:port][/path]'),
 	],
 
-	# Service Configuration
+    /*
+    |--------------------------------------------------------------------------
+    | Service Configuration
+    |--------------------------------------------------------------------------
+    |
+    | For integrating with the live endpoint,
+	| change the URL to https://api.paypal.com!
+    |
+    */
 	'Service' => [
-		# For integrating with the live endpoint,
-		# change the URL to https://api.paypal.com!
-		//'EndPoint' => 'https://api.sandbox.paypal.com',
+		'EndPoint' => env('PAYPAL_SERVICE_ENDPOINT', 'https://api.sandbox.paypal.com'),
 	],
 
 
-	# Logging Information
+    /*
+    |--------------------------------------------------------------------------
+    | Logging Information
+    |--------------------------------------------------------------------------
+    |
+    | Filename:
+    | When using a relative path, the log file is created
+	| relative to the .php file that is the entry point
+	| for this request. You can also provide an absolute
+	| path here
+	|
+	| LogLevel:
+	| Logging level can be one of FINE, INFO, WARN or ERROR
+	| Logging is most verbose in the 'FINE' level and
+	| decreases as you proceed towards ERROR
+    |
+    */
 	'Log' => [
-		//'LogEnabled' => true,
-
-		# When using a relative path, the log file is created
-		# relative to the .php file that is the entry point
-		# for this request. You can also provide an absolute
-		# path here
-		//'FileName' => '../PayPal.log',
-
-		# Logging level can be one of FINE, INFO, WARN or ERROR
-		# Logging is most verbose in the 'FINE' level and
-		# decreases as you proceed towards ERROR
-		//'LogLevel' => 'FINE',
+		'LogEnabled' => env('PAYPAL_LOG_ENABLED', false),
+		'FileName'   => env('PAYPAL_LOG_FILE_NAME', '../PayPal.log'),
+		'LogLevel'   => env('PAYPAL_LOG_LEVEL', 'FINE'),
 	],
 );

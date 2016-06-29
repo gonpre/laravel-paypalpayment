@@ -1,6 +1,6 @@
 <?php
 
-namespace spec\Anouar\Paypalpayment;
+namespace spec\Gonpre\Paypalpayment;
 
 use PayPal\Api\Address;
 use PayPal\Api\Amount;
@@ -36,7 +36,7 @@ class PaypalPaymentSpec extends ObjectBehavior
 
     function it_is_initializable()
     {
-        $this->shouldHaveType('Anouar\Paypalpayment\PaypalPayment');
+        $this->shouldHaveType('Gonpre\Paypalpayment\PaypalPayment');
     }
 
     public function it_is_return_address_object()
