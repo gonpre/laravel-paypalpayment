@@ -1,14 +1,16 @@
+##Forked from:
+[anouar/paypalpayment](https://github.com/anouarabdsslm/laravel-paypalpayment)
 
 ##Note :
-If you're going to use this package with Laravel 4, make sure to include the Laravel 4 version: 
+If you're going to use this package with Laravel 4, make sure to include the Laravel 4 version:
 ```js
 "require": {
-    "anouar/paypalpayment": "1.0"
+    "gonpre/paypalpayment": "1.0"
 }
 ```
 laravel-paypalpayment
 =====================
-[![Build Status](https://travis-ci.org/xroot/laravel-paypalpayment.svg?branch=master)](https://travis-ci.org/xroot/laravel-paypalpayment)
+[![Build Status](https://travis-ci.org/gonpre/laravel-paypalpayment.svg?branch=master)](https://travis-ci.org/gonpre/laravel-paypalpayment)
 
 laravel-paypalpayment is a simple package that helps you to process direct credit card payments, stored credit card payments and PayPal account payments with your Laravel 4/5 projects using PayPal REST API SDK.
 
@@ -22,7 +24,7 @@ Install this package through Composer. To your `composer.json` file, add:
 
 ```js
 "require": {
-    "anouar/paypalpayment": "~1.0"
+    "gonpre/paypalpayment": "~1.0"
 }
 ```
 
@@ -31,25 +33,25 @@ Next, run `composer update` to download it.
 Add the service provider to `config/app.php` (`app/config/app.php` in Laravel 4), within the `providers` array.
 
 ```php
-'providers' => array(
+'providers' => [
     // ...
 
-    'Anouar\Paypalpayment\PaypalpaymentServiceProvider',
-)
+    Gonpre\Paypalpayment\PaypalpaymentServiceProvider::class,
+]
 ```
 
 Then add an alias to `config/app.php` (`app/config/app.php`), within the `aliases` array.
 
 ```php
-'aliases' => array(
+'aliases' => [
     // ...
 
-    'Paypalpayment'   => 'Anouar\Paypalpayment\Facades\PaypalPayment',
-)
+    'Paypalpayment'   => Gonpre\Paypalpayment\Facades\PaypalPayment::class,
+]
 ```
 Finaly Pulish the package configuration by running this CMD ```php artisan vendor:publish```
 ##Configuration
-Now go to `vendor\anouar\paypalpayment\src\Anouar\Paypalpayment\sdk_config.ini`.
+Now go to `vendor\gonpre\paypalpayment\src\Gonpre\Paypalpayment\sdk_config.ini`.
 
 Set your SDK configuration `acct1.ClientId` and `acct1.ClientSecret` , set the `service.EndPoint` to the mode that you want , by default it set to testing mode which is`service.EndPoint="https://api.sandbox.paypal.com"`. If you were going live, make sure to comment the sandbox mode and uncomment the live mode.
 
@@ -70,7 +72,7 @@ http.Retry = 1
 ;Service Configuration
 [Service]
 service.EndPoint="https://api.sandbox.paypal.com"
-; Uncomment this line for integrating with the live endpoint 
+; Uncomment this line for integrating with the live endpoint
 ; service.EndPoint="https://api.paypal.com"
 
 
@@ -101,15 +103,15 @@ If you do not want to use an ini file or want to pick your configuration dynamic
 
     /**
      * Set the ClientId and the ClientSecret.
-     * @param 
+     * @param
      *string $_ClientId
      *string $_ClientSecret
      */
-    private $_ClientId='AVJx0RArQzkCCsWC0evZi1SsoO4gxjDkkULQBdmPNBZT4fc14AROUq-etMEY';
-    private $_ClientSecret='EH5F0BAxqonVnP8M4a0c6ezUHq-UT-CWfGciPNQOdUlTpWPkNyuS6eDN-tpA';
+    private $_ClientId     = 'AVJx0RArQzkCCsWC0evZi1SsoO4gxjDkkULQBdmPNBZT4fc14AROUq-etMEY';
+    private $_ClientSecret = 'EH5F0BAxqonVnP8M4a0c6ezUHq-UT-CWfGciPNQOdUlTpWPkNyuS6eDN-tpA';
 
     /*
-     *   These construct set the SDK configuration dynamiclly, 
+     *   These construct set the SDK configuration dynamiclly,
      *   If you want to pick your configuration from the sdk_config.ini file
      *   make sure to update you configuration there then grape the credentials using this code :
      *   $this->_cred= Paypalpayment::OAuthTokenCredential();
@@ -118,23 +120,23 @@ If you do not want to use an ini file or want to pick your configuration dynamic
     {
 
         // ### Api Context
-        // Pass in a `ApiContext` object to authenticate 
-        // the call. You can also send a unique request id 
+        // Pass in a `ApiContext` object to authenticate
+        // the call. You can also send a unique request id
         // (that ensures idempotency). The SDK generates
-        // a request id if you do not pass one explicitly. 
+        // a request id if you do not pass one explicitly.
 
         $this->_apiContext = Paypalpayment::apiContext($this->_ClientId, $this->_ClientSecret);
 
-        // Uncomment this step if you want to use per request 
+        // Uncomment this step if you want to use per request
         // dynamic configuration instead of using sdk_config.ini
 
-        $this->_apiContext->setConfig(array(
-            'mode' => 'sandbox',
+        $this->_apiContext->setConfig([
+            'mode'                   => 'sandbox',
             'http.ConnectionTimeOut' => 30,
-            'log.LogEnabled' => true,
-            'log.FileName' => __DIR__.'/../PayPal.log',
-            'log.LogLevel' => 'FINE'
-        ));
+            'log.LogEnabled'         => true,
+            'log.FileName'           => __DIR__.'/../PayPal.log',
+            'log.LogLevel'           => 'FINE'
+        ]);
 
     }
 
@@ -186,16 +188,16 @@ class PaypalPaymentController extends BaseController {
         // Uncomment this step if you want to use per request
         // dynamic configuration instead of using sdk_config.ini
 
-        $this->_apiContext->setConfig(array(
-            'mode' => 'sandbox',
-            'service.EndPoint' => 'https://api.sandbox.paypal.com',
+        $this->_apiContext->setConfig([
+            'mode'                   => 'sandbox',
+            'service.EndPoint'       => 'https://api.sandbox.paypal.com',
             'http.ConnectionTimeOut' => 30,
-            'log.LogEnabled' => true,
-            'log.FileName' => __DIR__.'/../PayPal.log',
-            'log.LogLevel' => 'FINE'
+            'log.LogEnabled'         => true,
+            'log.FileName'           => __DIR__.'/../PayPal.log',
+            'log.LogLevel'           => 'FINE'
         ));
     }
-     
+
 }
 ```
 
@@ -208,8 +210,8 @@ $flatConfig = array_dot($config); // Flatten the array with dots
 $this->_apiContext->setConfig($flatConfig);
 ```
 
-##2-Create Payment 
-Add the `create()` function to the `PaypalPaymentController` Controller 
+##2-Create Payment
+Add the `create()` function to the `PaypalPaymentController` Controller
 
 ```php
 
@@ -263,7 +265,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
         // as 'credit_card'
         $payer = Paypalpayment::payer();
         $payer->setPaymentMethod("credit_card")
-            ->setFundingInstruments(array($fi));
+            ->setFundingInstruments([$fi]);
 
         $item1 = Paypalpayment::item();
         $item1->setName('Ground Coffee 40 oz')
@@ -283,7 +285,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
 
 
         $itemList = Paypalpayment::itemList();
-        $itemList->setItems(array($item1,$item2));
+        $itemList->setItems([$item1, $item2]);
 
 
         $details = Paypalpayment::details();
@@ -319,7 +321,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
 
         $payment->setIntent("sale")
             ->setPayer($payer)
-            ->setTransactions(array($transaction));
+            ->setTransactions([$transaction]);
 
         try {
             // ### Create Payment
@@ -333,30 +335,30 @@ Add the `create()` function to the `PaypalPaymentController` Controller
         }
 
         dd($payment);
-    } 
+    }
 ```
 ##3-List Payment
-Add the `index()` function to the `PaypalPaymentController` Controller 
+Add the `index()` function to the `PaypalPaymentController` Controller
 ```php
     /*
-        Use this call to get a list of payments. 
+        Use this call to get a list of payments.
         url:payment/
     */
     public function index()
     {
         echo "<pre>";
 
-        $payments = Paypalpayment::getAll(array('count' => 1, 'start_index' => 0), $this->_apiContext);
+        $payments = Paypalpayment::getAll(['count' => 1, 'start_index' => 0], $this->_apiContext);
 
         dd($payments);
     }
 ```
 
 ##4-Get Payment details
-Add the `show()` function to the `PaypalPaymentController` Controller 
+Add the `show()` function to the `PaypalPaymentController` Controller
 ```php
     /*
-        Use this call to get details about payments that have not completed, 
+        Use this call to get details about payments that have not completed,
         such as payments that are created and approved, or if a payment has failed.
         url:payment/PAY-3B7201824D767003LKHZSVOA
     */
@@ -378,20 +380,20 @@ Only for Payment with `payment_method` as `"paypal"`
     $paymentId = '';grape it from DB;
     $PayerID = '';grape it from DB;
     $payment = Paypalpayment::getById($paymentId, $this->_apiContext);
-    
-    // PaymentExecution object includes information necessary 
-    // to execute a PayPal account payment. 
+
+    // PaymentExecution object includes information necessary
+    // to execute a PayPal account payment.
     // The payer_id is added to the request query parameters
     // when the user is redirected from paypal back to your site
     $execution = Paypalpayment::PaymentExecution();
     $execution->setPayerId($PayerID);
-    
+
     //Execute the payment
     $payment->execute($execution,$this->_apiContext);
 ```
 Go to your `routes.php` file  and register a resourceful route to the controller: `Route::resource('payment', 'PaypalPaymentController');`
 
-These examples pick the SDK configuration dynamically. If you want to pick your configuration from the `sdk_config.ini` file make sure to set thus configuration there. 
+These examples pick the SDK configuration dynamically. If you want to pick your configuration from the `sdk_config.ini` file make sure to set thus configuration there.
 
 Conclusion
 ==========

@@ -1,13 +1,15 @@
-<?php namespace Anouar\Paypalpayment;
+<?php namespace Gonpre\Paypalpayment;
 
 use Illuminate\Support\Facades\URL;
 use PayPal\Api\Address;
+use PayPal\Api\Agreement;
+use PayPal\Api\AgreementDetails;
 use PayPal\Api\Amount;
-use PayPal\Api\Details;
 use PayPal\Api\Authorization;
 use PayPal\Api\Capture;
 use PayPal\Api\CreditCard;
 use PayPal\Api\CreditCardToken;
+use PayPal\Api\Details;
 use PayPal\Api\FundingInstrument;
 use PayPal\Api\Item;
 use PayPal\Api\ItemList;
@@ -25,19 +27,34 @@ use PayPal\Api\Sale;
 use PayPal\Api\ShippingAddress;
 use PayPal\Api\Transaction;
 use PayPal\Api\Transactions;
+use PayPal\Auth\OAuthTokenCredential;
 use PayPal\Core\PPConfigManager;
 use PayPal\Rest\ApiContext;
-use PayPal\Auth\OAuthTokenCredential;
 
-class PaypalPayment{
-
-
+class PaypalPayment
+{
     /**
      * @return \PayPal\Api\Address
      */
     public function address()
     {
         return new Address;
+    }
+
+    /**
+     * @return \PayPal\Api\Agreement
+     */
+    public function agreement()
+    {
+        return new Agreement;
+    }
+
+    /**
+     * @return \PayPal\Api\AgreementDetails
+     */
+    public function agreementDetails()
+    {
+        return new AgreementDetails;
     }
 
     /**
@@ -245,8 +262,6 @@ class PaypalPayment{
      */
     public  static function OAuthTokenCredential($ClientId = null, $ClientSecret=null)
     {
-        //define("PP_CONFIG_PATH", __DIR__);
-
         if(isset($ClientId) && isset($ClientSecret)) {
           return new OAuthTokenCredential($ClientId, $ClientSecret);
         }
@@ -266,7 +281,7 @@ class PaypalPayment{
 
         return $cred;
     }
- 
+
     /**
      * Get the base URL
      * @return mixed
@@ -287,6 +302,7 @@ class PaypalPayment{
         if (isset($apiContext)) {
             return Payment::get($paymentId, $apiContext);
         }
+
         return Payment::get($paymentId);
     }
 
@@ -301,6 +317,7 @@ class PaypalPayment{
         if (isset($apiContext)) {
             return Payment::all($param, $apiContext);
         }
+
         return Payment::all($param);
     }
 

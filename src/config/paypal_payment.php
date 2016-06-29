@@ -1,29 +1,29 @@
 <?php
 
-return array(
+return [
 	# Account credentials from developer portal
-	'Account' => array(
+	'Account' => [
 		//'ClientId' => 'AVJx0RArQzkCCsWC0evZi1SsoO4gxjDkkULQBdmPNBZ4fc14AROUq-etMEY',
 		//'ClientSecret' => 'EH5F0BAxqonVnP8M4a0c6ezUHq-UT-CWfGciPNQdUlTpWPkNyuS6eDN-tpA',
-	),
+	],
 
 	# Connection Information
-	'Http' => array(
+	'Http' => [
 		// 'ConnectionTimeOut' => 30,
 		'Retry' => 1,
 		//'Proxy' => 'http://[username:password]@hostname[:port][/path]',
-	),
+	],
 
 	# Service Configuration
-	'Service' => array(
+	'Service' => [
 		# For integrating with the live endpoint,
 		# change the URL to https://api.paypal.com!
 		//'EndPoint' => 'https://api.sandbox.paypal.com',
-	),
+	],
 
 
 	# Logging Information
-	'Log' => array(
+	'Log' => [
 		//'LogEnabled' => true,
 
 		# When using a relative path, the log file is created
@@ -36,5 +36,5 @@ return array(
 		# Logging is most verbose in the 'FINE' level and
 		# decreases as you proceed towards ERROR
 		//'LogLevel' => 'FINE',
-	),
+	],
 );
