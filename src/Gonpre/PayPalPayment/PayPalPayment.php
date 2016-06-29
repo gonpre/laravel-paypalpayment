@@ -1,4 +1,4 @@
-<?php namespace Gonpre\Paypalpayment;
+<?php namespace Gonpre\PayPalPayment;
 
 use Illuminate\Support\Facades\URL;
 use PayPal\Api\Address;
@@ -28,10 +28,10 @@ use PayPal\Api\ShippingAddress;
 use PayPal\Api\Transaction;
 use PayPal\Api\Transactions;
 use PayPal\Auth\OAuthTokenCredential;
-use PayPal\Core\PPConfigManager;
+use PayPal\Core\PayPalConfigManager;
 use PayPal\Rest\ApiContext;
 
-class PaypalPayment
+class PayPalPayment
 {
     /**
      * @return \PayPal\Api\Address
@@ -251,16 +251,21 @@ class PaypalPayment
     public function apiContext($clientId = null, $clientSecret = null, $requestId = null)
     {
         if (empty($clientId)) {
-            $clientId     = config('paypal_payment.Account.ClientId');
+            $clientId = config('paypal_payment.acct1.ClientId', null);
         }
 
-        if (empty($clientId)) {
-            $clientSecret = config('paypal_payment.Account.ClientSecret');
+        if (empty($clientSecret)) {
+            $clientSecret = config('paypal_payment.acct1.ClientSecret', null);
         }
 
-        $credentials  = self::OAuthTokenCredential($clientId, $clientSecret);
+        $credentials = self::OAuthTokenCredential($clientId, $clientSecret);
+        $apiContext  = new ApiContext($credentials, $requestId);
+        $config      = config('paypal_payment');
+        $flatConfig  = array_dot($config);
 
-        return new ApiContext($credentials, $requestId);
+        $apiContext->setConfig($flatConfig);
+
+        return $apiContext;
     }
 
     /**
@@ -274,7 +279,7 @@ class PaypalPayment
           return new OAuthTokenCredential($ClientId, $ClientSecret);
         }
 
-        $configManager  = PPConfigManager::getInstance();
+        $configManager  = PayPalConfigManager::getInstance();
         // $cred is used by samples that include this bootstrap file
         // This piece of code simply demonstrates how you can
         // dynamically pass in a client id/secret instead of using

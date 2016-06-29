@@ -36,7 +36,7 @@ Add the service provider to `config/app.php` (`app/config/app.php` in Laravel 4)
 'providers' => [
     // ...
 
-    Gonpre\Paypalpayment\PaypalpaymentServiceProvider::class,
+    Gonpre\PayPalPayment\PayPalPaymentServiceProvider::class,
 ]
 ```
 
@@ -46,12 +46,12 @@ Then add an alias to `config/app.php` (`app/config/app.php`), within the `aliase
 'aliases' => [
     // ...
 
-    'Paypalpayment'   => Gonpre\Paypalpayment\Facades\PaypalPayment::class,
+    'PayPalPayment'   => Gonpre\PayPalPayment\Facades\PayPalPayment::class,
 ]
 ```
 Finaly Pulish the package configuration by running this CMD ```php artisan vendor:publish```
 ##Configuration
-Now go to `vendor\gonpre\paypalpayment\src\Gonpre\Paypalpayment\sdk_config.ini`.
+Now go to `vendor\gonpre\paypalpayment\src\Gonpre\PayPalPayment\sdk_config.ini`.
 
 Set your SDK configuration `acct1.ClientId` and `acct1.ClientSecret` , set the `service.EndPoint` to the mode that you want , by default it set to testing mode which is`service.EndPoint="https://api.sandbox.paypal.com"`. If you were going live, make sure to comment the sandbox mode and uncomment the live mode.
 
@@ -114,7 +114,7 @@ If you do not want to use an ini file or want to pick your configuration dynamic
      *   These construct set the SDK configuration dynamiclly,
      *   If you want to pick your configuration from the sdk_config.ini file
      *   make sure to update you configuration there then grape the credentials using this code :
-     *   $this->_cred= Paypalpayment::OAuthTokenCredential();
+     *   $this->_cred= PayPalPayment::OAuthTokenCredential();
     */
     public function __construct()
     {
@@ -125,7 +125,7 @@ If you do not want to use an ini file or want to pick your configuration dynamic
         // (that ensures idempotency). The SDK generates
         // a request id if you do not pass one explicitly.
 
-        $this->_apiContext = Paypalpayment::apiContext($this->_ClientId, $this->_ClientSecret);
+        $this->_apiContext = PayPalPayment::apiContext($this->_ClientId, $this->_ClientSecret);
 
         // Uncomment this step if you want to use per request
         // dynamic configuration instead of using sdk_config.ini
@@ -148,10 +148,10 @@ Example Code
 ============
 
 ##1-Initiate The Configuration
-Create new controller `PaypalPaymentController` and initiate the configuration :
+Create new controller `PayPalPaymentController` and initiate the configuration :
 ```php
 
-class PaypalPaymentController extends BaseController {
+class PayPalPaymentController extends BaseController {
 
     /**
      * object to authenticate the call.
@@ -172,7 +172,7 @@ class PaypalPaymentController extends BaseController {
      *   These construct set the SDK configuration dynamiclly,
      *   If you want to pick your configuration from the sdk_config.ini file
      *   make sure to update you configuration there then grape the credentials using this code :
-     *   $this->_cred= Paypalpayment::OAuthTokenCredential();
+     *   $this->_cred= PayPalPayment::OAuthTokenCredential();
     */
     public function __construct()
     {
@@ -183,7 +183,7 @@ class PaypalPaymentController extends BaseController {
         // (that ensures idempotency). The SDK generates
         // a request id if you do not pass one explicitly.
 
-        $this->_apiContext = Paypalpayment::ApiContext($this->_ClientId, $this->_ClientSecret);
+        $this->_apiContext = PayPalPayment::ApiContext($this->_ClientId, $this->_ClientSecret);
 
         // Uncomment this step if you want to use per request
         // dynamic configuration instead of using sdk_config.ini
@@ -211,7 +211,7 @@ $this->_apiContext->setConfig($flatConfig);
 ```
 
 ##2-Create Payment
-Add the `create()` function to the `PaypalPaymentController` Controller
+Add the `create()` function to the `PayPalPaymentController` Controller
 
 ```php
 
@@ -231,7 +231,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
         // ### Address
         // Base Address object used as shipping or billing
         // address in a payment. [Optional]
-        $addr= Paypalpayment::address();
+        $addr= PayPalPayment::address();
         $addr->setLine1("3909 Witmer Road");
         $addr->setLine2("Niagara Falls");
         $addr->setCity("Niagara Falls");
@@ -241,7 +241,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
         $addr->setPhone("716-298-1822");
 
         // ### CreditCard
-        $card = Paypalpayment::creditCard();
+        $card = PayPalPayment::creditCard();
         $card->setType("visa")
             ->setNumber("4758411877817150")
             ->setExpireMonth("05")
@@ -256,18 +256,18 @@ Add the `create()` function to the `PaypalPaymentController` Controller
         // and provided by the facilitator. This is required when
         // creating or using a tokenized funding instrument)
         // and the `CreditCardDetails`
-        $fi = Paypalpayment::fundingInstrument();
+        $fi = PayPalPayment::fundingInstrument();
         $fi->setCreditCard($card);
 
         // ### Payer
         // A resource representing a Payer that funds a payment
         // Use the List of `FundingInstrument` and the Payment Method
         // as 'credit_card'
-        $payer = Paypalpayment::payer();
+        $payer = PayPalPayment::payer();
         $payer->setPaymentMethod("credit_card")
             ->setFundingInstruments([$fi]);
 
-        $item1 = Paypalpayment::item();
+        $item1 = PayPalPayment::item();
         $item1->setName('Ground Coffee 40 oz')
                 ->setDescription('Ground Coffee 40 oz')
                 ->setCurrency('USD')
@@ -275,7 +275,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
                 ->setTax(0.3)
                 ->setPrice(7.50);
 
-        $item2 = Paypalpayment::item();
+        $item2 = PayPalPayment::item();
         $item2->setName('Granola bars')
                 ->setDescription('Granola Bars with Peanuts')
                 ->setCurrency('USD')
@@ -284,18 +284,18 @@ Add the `create()` function to the `PaypalPaymentController` Controller
                 ->setPrice(2);
 
 
-        $itemList = Paypalpayment::itemList();
+        $itemList = PayPalPayment::itemList();
         $itemList->setItems([$item1, $item2]);
 
 
-        $details = Paypalpayment::details();
+        $details = PayPalPayment::details();
         $details->setShipping("1.2")
                 ->setTax("1.3")
                 //total of items prices
                 ->setSubtotal("17.5");
 
         //Payment Amount
-        $amount = Paypalpayment::amount();
+        $amount = PayPalPayment::amount();
         $amount->setCurrency("USD")
                 // the total is $17.8 = (16 + 0.6) * 1 ( of quantity) + 1.2 ( of Shipping).
                 ->setTotal("20")
@@ -307,7 +307,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
         // is fulfilling it. Transaction is created with
         // a `Payee` and `Amount` types
 
-        $transaction = Paypalpayment::transaction();
+        $transaction = PayPalPayment::transaction();
         $transaction->setAmount($amount)
             ->setItemList($itemList)
             ->setDescription("Payment description")
@@ -317,7 +317,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
         // A Payment Resource; create one using
         // the above types and intent as 'sale'
 
-        $payment = Paypalpayment::payment();
+        $payment = PayPalPayment::payment();
 
         $payment->setIntent("sale")
             ->setPayer($payer)
@@ -329,7 +329,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
             // using a valid ApiContext
             // The return object contains the status;
             $payment->create($this->_apiContext);
-        } catch (\PPConnectionException $ex) {
+        } catch (\PayPalConnectionException $ex) {
             return  "Exception: " . $ex->getMessage() . PHP_EOL;
             exit(1);
         }
@@ -338,7 +338,7 @@ Add the `create()` function to the `PaypalPaymentController` Controller
     }
 ```
 ##3-List Payment
-Add the `index()` function to the `PaypalPaymentController` Controller
+Add the `index()` function to the `PayPalPaymentController` Controller
 ```php
     /*
         Use this call to get a list of payments.
@@ -348,14 +348,14 @@ Add the `index()` function to the `PaypalPaymentController` Controller
     {
         echo "<pre>";
 
-        $payments = Paypalpayment::getAll(['count' => 1, 'start_index' => 0], $this->_apiContext);
+        $payments = PayPalPayment::getAll(['count' => 1, 'start_index' => 0], $this->_apiContext);
 
         dd($payments);
     }
 ```
 
 ##4-Get Payment details
-Add the `show()` function to the `PaypalPaymentController` Controller
+Add the `show()` function to the `PayPalPaymentController` Controller
 ```php
     /*
         Use this call to get details about payments that have not completed,
@@ -365,7 +365,7 @@ Add the `show()` function to the `PaypalPaymentController` Controller
 
     public function show($payment_id)
     {
-       $payment = Paypalpayment::getById($payment_id,$this->_apiContext);
+       $payment = PayPalPayment::getById($payment_id,$this->_apiContext);
 
        dd($payment);
     }
@@ -379,19 +379,19 @@ Only for Payment with `payment_method` as `"paypal"`
     // create() fuction , this function create payment using "paypal" method
     $paymentId = '';grape it from DB;
     $PayerID = '';grape it from DB;
-    $payment = Paypalpayment::getById($paymentId, $this->_apiContext);
+    $payment = PayPalPayment::getById($paymentId, $this->_apiContext);
 
     // PaymentExecution object includes information necessary
     // to execute a PayPal account payment.
     // The payer_id is added to the request query parameters
     // when the user is redirected from paypal back to your site
-    $execution = Paypalpayment::PaymentExecution();
+    $execution = PayPalPayment::PaymentExecution();
     $execution->setPayerId($PayerID);
 
     //Execute the payment
     $payment->execute($execution,$this->_apiContext);
 ```
-Go to your `routes.php` file  and register a resourceful route to the controller: `Route::resource('payment', 'PaypalPaymentController');`
+Go to your `routes.php` file  and register a resourceful route to the controller: `Route::resource('payment', 'PayPalPaymentController');`
 
 These examples pick the SDK configuration dynamically. If you want to pick your configuration from the `sdk_config.ini` file make sure to set thus configuration there.
 

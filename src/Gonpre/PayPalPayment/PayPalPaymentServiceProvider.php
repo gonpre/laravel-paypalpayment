@@ -1,8 +1,8 @@
-<?php namespace Gonpre\Paypalpayment;
+<?php namespace Gonpre\PayPalPayment;
 
 use Illuminate\Support\ServiceProvider;
 
-class PaypalpaymentServiceProvider extends ServiceProvider {
+class PayPalPaymentServiceProvider extends ServiceProvider {
 
     /**
      * Indicates if loading of the provider is deferred.
@@ -19,7 +19,7 @@ class PaypalpaymentServiceProvider extends ServiceProvider {
     public function register()
     {
         $this->app['paypalpayment'] = $this->app->share(function($app) {
-            return new PaypalPayment();
+            return new PayPalPayment();
         });
 
         $this->publishes([

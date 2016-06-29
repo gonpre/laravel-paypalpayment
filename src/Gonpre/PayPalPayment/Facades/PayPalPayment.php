@@ -1,8 +1,8 @@
-<?php namespace Gonpre\Paypalpayment\Facades;
+<?php namespace Gonpre\PayPalPayment\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class PaypalPayment extends Facade
+class PayPalPayment extends Facade
 {
 
     /**
