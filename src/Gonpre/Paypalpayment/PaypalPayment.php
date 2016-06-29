@@ -250,7 +250,15 @@ class PaypalPayment
      */
     public function apiContext($clientId = null, $clientSecret = null, $requestId = null)
     {
-        $credentials = self::OAuthTokenCredential($clientId, $clientSecret);
+        if (empty($clientId)) {
+            $clientId     = config('paypal_payment.Account.ClientId');
+        }
+
+        if (empty($clientId)) {
+            $clientSecret = config('paypal_payment.Account.ClientSecret');
+        }
+
+        $credentials  = self::OAuthTokenCredential($clientId, $clientSecret);
 
         return new ApiContext($credentials, $requestId);
     }

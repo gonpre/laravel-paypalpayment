@@ -63,4 +63,4 @@ return [
 		'FileName'   => env('PAYPAL_LOG_FILE_NAME', '../PayPal.log'),
 		'LogLevel'   => env('PAYPAL_LOG_LEVEL', 'FINE'),
 	],
-);
+];

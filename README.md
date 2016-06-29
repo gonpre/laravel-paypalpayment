@@ -203,7 +203,7 @@ class PaypalPaymentController extends BaseController {
 
 If you want to use the Laravel config file: The first step is to publish the config with `artisan vendor:publish`. This will create the config file `storage/paypal_payment.php` (`app/config/paypal_payment.php` in Laravel 4). Configurate it, then replace the `setConfig()` method call (see above) with:
 
-```
+```php
 $config = config('paypal_payment'); // Get all config items as multi dimensional array
 $flatConfig = array_dot($config); // Flatten the array with dots
 
