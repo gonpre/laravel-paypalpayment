@@ -15,7 +15,7 @@ laravel-paypalpayment
 laravel-paypalpayment is a simple package that helps you to process direct credit card payments, stored credit card payments and PayPal account payments with your Laravel 4/5 projects using PayPal REST API SDK.
 
 ##Donation :
-If you want to support us: <a href='https://pledgie.com/campaigns/24666'><img alt='Click here to lend your support to: github and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/24666.png?skin_name=chrome' border='0' ></a>
+If you want to support us: <a href='https://pledgie.com/campaigns/32161'><img alt='Click here to lend your support to: Laravel paypal payment package and make a donation at pledgie.com !' src='https://pledgie.com/campaigns/32161.png?skin_name=chrome' border='0' ></a>
 
 ## <a href='https://youtu.be/q5Xb5r4MUB8'>Watch a Quick Demo</a>
 Installation
@@ -165,8 +165,8 @@ class PaypalPaymentController extends BaseController {
      *string $_ClientId
      *string $_ClientSecret
      */
-    private $_ClientId = 'AVJx0RArQzkCCsWC0evZi1SsoO4gxjDkkULQBdmPNBZT4fc14AROUq-etMEU';
-    private $_ClientSecret='EH5F0BAxqonVnP8M4a0c6ezUHq-UT-CWfGciPNQOdUlTpWPkNyuS6eDN-tpB';
+    private $_ClientId     = 'AVJx0RArQzkCCsWC0evZi1SsoO4gxjDkkULQBdmPNBZT4fc14AROUq-etMEU';
+    private $_ClientSecret ='EH5F0BAxqonVnP8M4a0c6ezUHq-UT-CWfGciPNQOdUlTpWPkNyuS6eDN-tpB';
 
     /*
      *   These construct set the SDK configuration dynamiclly,
@@ -195,7 +195,7 @@ class PaypalPaymentController extends BaseController {
             'log.LogEnabled'         => true,
             'log.FileName'           => __DIR__.'/../PayPal.log',
             'log.LogLevel'           => 'FINE'
-        ));
+        ]);
     }
 
 }
