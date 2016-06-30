@@ -241,7 +241,6 @@ class PayPalPayment
         return new Transaction;
     }
 
-
     /**
      * @param null $clientId
      * @param null $clientSecret
@@ -250,20 +249,21 @@ class PayPalPayment
      */
     public function apiContext($clientId = null, $clientSecret = null, $requestId = null)
     {
-        if (empty($clientId)) {
-            $clientId = config('paypal_payment.acct1.ClientId', null);
-        }
-
-        if (empty($clientSecret)) {
+        if (empty($clientId) || empty($clientSecret)) {
+            $clientId     = config('paypal_payment.acct1.ClientId', null);
             $clientSecret = config('paypal_payment.acct1.ClientSecret', null);
         }
 
         $credentials = self::OAuthTokenCredential($clientId, $clientSecret);
         $apiContext  = new ApiContext($credentials, $requestId);
-        $config      = config('paypal_payment');
-        $flatConfig  = array_dot($config);
 
-        $apiContext->setConfig($flatConfig);
+        if (!config('paypal_payment.config.ini')) {
+            $config = config('paypal_payment');
+            unset($config['config']['ini']);
+
+            $flatConfig  = array_dot($config);
+            $apiContext->setConfig($flatConfig);
+        }
 
         return $apiContext;
     }
@@ -273,10 +273,10 @@ class PayPalPayment
      * @param null $ClientSecret
      * @return PayPal/Auth/OAuthTokenCredential
      */
-    public  static function OAuthTokenCredential($ClientId = null, $ClientSecret=null)
+    public  static function OAuthTokenCredential($clientId = null, $clientSecret=null)
     {
-        if(isset($ClientId) && isset($ClientSecret)) {
-          return new OAuthTokenCredential($ClientId, $ClientSecret);
+        if(!empty($clientId) && !empty($clientSecret)) {
+          return new OAuthTokenCredential($clientId, $clientSecret);
         }
 
         $configManager  = PayPalConfigManager::getInstance();
