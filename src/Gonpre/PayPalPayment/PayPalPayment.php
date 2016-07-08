@@ -76,7 +76,7 @@ class PayPalPayment
      */
     public function address($data = null)
     {
-        return new Address;
+        return new Address($data);
     }
 
     /**
@@ -84,7 +84,7 @@ class PayPalPayment
      */
     public function amount($data = null)
     {
-        return new Amount;
+        return new Amount($data);
     }
 
     /**
@@ -92,7 +92,7 @@ class PayPalPayment
      */
     public  function details($data = null)
     {
-        return new Details;
+        return new Details($data);
     }
 
     /**
@@ -100,7 +100,7 @@ class PayPalPayment
      */
     public  function authorization($data = null)
     {
-        return new Authorization;
+        return new Authorization($data);
     }
 
     /**
@@ -108,7 +108,7 @@ class PayPalPayment
      */
     public  function capture($data = null)
     {
-        return new Capture;
+        return new Capture($data);
     }
 
     /**
@@ -116,7 +116,7 @@ class PayPalPayment
      */
     public  function creditCard($data = null)
     {
-        return new CreditCard;
+        return new CreditCard($data);
     }
 
     /**
@@ -124,7 +124,7 @@ class PayPalPayment
      */
     public  function creditCardToken($data = null)
     {
-        return new CreditCardToken;
+        return new CreditCardToken($data);
     }
 
     /**
@@ -132,7 +132,7 @@ class PayPalPayment
      */
     public  function fundingInstrument($data = null)
     {
-        return new FundingInstrument;
+        return new FundingInstrument($data);
     }
 
     /**
@@ -140,7 +140,7 @@ class PayPalPayment
      */
     public  function item($data = null)
     {
-        return new Item;
+        return new Item($data);
     }
 
     /**
@@ -148,7 +148,7 @@ class PayPalPayment
      */
     public  function itemList($data = null)
     {
-        return new ItemList;
+        return new ItemList($data);
     }
 
     /**
@@ -156,7 +156,7 @@ class PayPalPayment
      */
     public  function links($data = null)
     {
-        return new Links;
+        return new Links($data);
     }
 
     /**
@@ -164,7 +164,7 @@ class PayPalPayment
      */
     public  function payee($data = null)
     {
-        return new Payee;
+        return new Payee($data);
     }
 
     /**
@@ -180,7 +180,7 @@ class PayPalPayment
      */
     public  function payerInfo($data = null)
     {
-        return new PayerInfo;
+        return new PayerInfo($data);
     }
 
     /**
@@ -188,7 +188,7 @@ class PayPalPayment
      */
     public  function payment($data = null)
     {
-        return new Payment;
+        return new Payment($data);
     }
 
     /**
@@ -209,7 +209,7 @@ class PayPalPayment
      */
     public  function paymentExecution($data = null)
     {
-        return new PaymentExecution;
+        return new PaymentExecution($data);
     }
 
     /**
@@ -217,7 +217,7 @@ class PayPalPayment
      */
     public  function paymentHistory($data = null)
     {
-        return new PaymentHistory;
+        return new PaymentHistory($data);
     }
 
     /**
@@ -225,7 +225,7 @@ class PayPalPayment
      */
     public  function redirectUrls($data = null)
     {
-        return new RedirectUrls;
+        return new RedirectUrls($data);
     }
 
     /**
@@ -233,7 +233,7 @@ class PayPalPayment
      */
     public  function refund($data = null)
     {
-        return new Refund;
+        return new Refund($data);
     }
 
     /**
@@ -241,7 +241,7 @@ class PayPalPayment
      */
     public  function relatedResources($data = null)
     {
-        return new RelatedResources;
+        return new RelatedResources($data);
     }
 
     /**
@@ -249,7 +249,7 @@ class PayPalPayment
      */
     public  function sale($data = null)
     {
-        return new Sale;
+        return new Sale($data);
     }
 
     /**
@@ -257,7 +257,7 @@ class PayPalPayment
      */
     public  function shippingAddress($data = null)
     {
-        return new ShippingAddress;
+        return new ShippingAddress($data);
     }
 
     /**
@@ -265,7 +265,7 @@ class PayPalPayment
      */
     public  function transactions($data = null)
     {
-        return new Transactions;
+        return new Transactions($data);
     }
 
     /**
@@ -273,7 +273,7 @@ class PayPalPayment
      */
     public function transaction($data = null)
     {
-        return new Transaction;
+        return new Transaction($data);
     }
 
     /**
