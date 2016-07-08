@@ -1,23 +1,29 @@
 <?php namespace Gonpre\PayPalPayment;
 
-use Illuminate\Support\Facades\URL;
+use Gonpre\PayPalPayment\Plan;
+use Gonpre\PayPalPayment\Agreement;
+
 use PayPal\Api\Address;
-use PayPal\Api\Agreement;
 use PayPal\Api\AgreementDetails;
 use PayPal\Api\Amount;
 use PayPal\Api\Authorization;
 use PayPal\Api\Capture;
 use PayPal\Api\CreditCard;
 use PayPal\Api\CreditCardToken;
+use PayPal\Api\Currency;
 use PayPal\Api\Details;
 use PayPal\Api\FundingInstrument;
 use PayPal\Api\Item;
 use PayPal\Api\ItemList;
 use PayPal\Api\Links;
+use PayPal\Api\MerchantPreferences;
+use PayPal\Api\Patch;
+use PayPal\Api\PatchRequest;
 use PayPal\Api\Payee;
 use PayPal\Api\Payer;
 use PayPal\Api\PayerInfo;
 use PayPal\Api\Payment;
+use PayPal\Api\PaymentDefinition;
 use PayPal\Api\PaymentExecution;
 use PayPal\Api\PaymentHistory;
 use PayPal\Api\RedirectUrls;
@@ -28,217 +34,246 @@ use PayPal\Api\ShippingAddress;
 use PayPal\Api\Transaction;
 use PayPal\Api\Transactions;
 use PayPal\Auth\OAuthTokenCredential;
+use PayPal\Common\PayPalModel;
 use PayPal\Core\PayPalConfigManager;
 use PayPal\Rest\ApiContext;
 
 class PayPalPayment
 {
+    const PAYMENT_DEFINITION_TYPE_REGULAR = 'REGULAR';
+    const PAYMENT_DEFINITION_TYPE_TRIAL   = 'TRIAL';
+    const PLAN_TYPE_FIXED                 = 'FIXED';
+    const PLAN_TYPE_INFINITE              = 'INFINITE';
+
+    use Plan, Agreement;
+
+    /**
+     * @return \PayPal\Api\MerchantPreferences
+     */
+    public function merchantPreferences($data = null)
+    {
+        return new MerchantPreferences($data);
+    }
+
+    /**
+     * @return \PayPal\Api\PaymentDefinition
+     */
+    public function paymentDefinition($data = null)
+    {
+        return new PaymentDefinition($data);
+    }
+
+    /**
+     * @return \PayPal\Api\Currency
+     */
+    public function currency($data = null)
+    {
+        return new Currency($data);
+    }
+
     /**
      * @return \PayPal\Api\Address
      */
-    public function address()
+    public function address($data = null)
     {
-        return new Address;
-    }
-
-    /**
-     * @return \PayPal\Api\Agreement
-     */
-    public function agreement()
-    {
-        return new Agreement;
-    }
-
-    /**
-     * @return \PayPal\Api\AgreementDetails
-     */
-    public function agreementDetails()
-    {
-        return new AgreementDetails;
+        return new Address($data);
     }
 
     /**
      * @return \PayPal\Api\Amount
      */
-    public function amount()
+    public function amount($data = null)
     {
-        return new Amount;
+        return new Amount($data);
     }
 
     /**
      * @return \PayPal\Api\Details
      */
-    public  function details()
+    public  function details($data = null)
     {
-        return new Details;
+        return new Details($data);
     }
 
     /**
      * @return \PayPal\Api\Authorization
      */
-    public  function authorization()
+    public  function authorization($data = null)
     {
-        return new Authorization;
+        return new Authorization($data);
     }
 
     /**
      * @return \PayPal\Api\Capture
      */
-    public  function capture()
+    public  function capture($data = null)
     {
-        return new Capture;
+        return new Capture($data);
     }
 
     /**
      * @return \PayPal\Api\CreditCard
      */
-    public  function creditCard()
+    public  function creditCard($data = null)
     {
-        return new CreditCard;
+        return new CreditCard($data);
     }
 
     /**
      * @return \PayPal\Api\CreditCardToken
      */
-    public  function creditCardToken()
+    public  function creditCardToken($data = null)
     {
-        return new CreditCardToken;
+        return new CreditCardToken($data);
     }
 
     /**
      * @return \PayPal\Api\FundingInstrument
      */
-    public  function fundingInstrument()
+    public  function fundingInstrument($data = null)
     {
-        return new FundingInstrument;
+        return new FundingInstrument($data);
     }
 
     /**
      * @return \PayPal\Api\Item
      */
-    public  function item()
+    public  function item($data = null)
     {
-        return new Item;
+        return new Item($data);
     }
 
     /**
      * @return \PayPal\Api\ItemList
      */
-    public  function itemList()
+    public  function itemList($data = null)
     {
-        return new ItemList;
+        return new ItemList($data);
     }
 
     /**
      * @return \PayPal\Api\Links
      */
-    public  function links()
+    public  function links($data = null)
     {
-        return new Links;
+        return new Links($data);
     }
 
     /**
      * @return \PayPal\Api\Payee
      */
-    public  function payee()
+    public  function payee($data = null)
     {
-        return new Payee;
+        return new Payee($data);
     }
 
     /**
      * @return \PayPal\Api\Payer
      */
-    public  function payer()
+    public  function payer($data = null)
     {
-        return new Payer;
+        return new Payer($data);
     }
 
     /**
      * @return \PayPal\Api\PayerInfo
      */
-    public  function payerInfo()
+    public  function payerInfo($data = null)
     {
-        return new PayerInfo;
+        return new PayerInfo($data);
     }
 
     /**
      * @return \PayPal\Api\Payment
      */
-    public  function payment()
+    public  function payment($data = null)
     {
-        return new Payment;
+        return new Payment($data);
+    }
+
+    /**
+     * Get a payment details using the paymentId
+     *
+     * @param $paymentId
+     * @param \PayPal\Rest\ApiContext $apiContext
+     *
+     * @return \PayPal\Api\Payment
+     */
+    public static function getPayment($paymentId, ApiContext $apiContext = null)
+    {
+        return Payment::get($paymentId, $apiContext);
     }
 
     /**
      * @return \PayPal\Api\PaymentExecution
      */
-    public  function paymentExecution()
+    public  function paymentExecution($data = null)
     {
-        return new PaymentExecution;
+        return new PaymentExecution($data);
     }
 
     /**
      * @return \PayPal\Api\PaymentHistory
      */
-    public  function paymentHistory()
+    public  function paymentHistory($data = null)
     {
-        return new PaymentHistory;
+        return new PaymentHistory($data);
     }
 
     /**
      * @return \PayPal\Api\RedirectUrls
      */
-    public  function redirectUrls()
+    public  function redirectUrls($data = null)
     {
-        return new RedirectUrls;
+        return new RedirectUrls($data);
     }
 
     /**
      * @return \PayPal\Api\Refund
      */
-    public  function refund()
+    public  function refund($data = null)
     {
-        return new Refund;
+        return new Refund($data);
     }
 
     /**
      * @return \PayPal\Api\RelatedResources
      */
-    public  function relatedResources()
+    public  function relatedResources($data = null)
     {
-        return new RelatedResources;
+        return new RelatedResources($data);
     }
 
     /**
      * @return \PayPal\Api\Sale
      */
-    public  function sale()
+    public  function sale($data = null)
     {
-        return new Sale;
+        return new Sale($data);
     }
 
     /**
      * @return \PayPal\Api\ShippingAddress
      */
-    public  function shippingAddress()
+    public  function shippingAddress($data = null)
     {
-        return new ShippingAddress;
+        return new ShippingAddress($data);
     }
 
     /**
      * @return \PayPal\Api\Transactions
      */
-    public  function transactions()
+    public  function transactions($data = null)
     {
-        return new Transactions;
+        return new Transactions($data);
     }
 
     /**
      * @return \PayPal\Api\Transaction
      */
-    public function transaction()
+    public function transaction($data = null)
     {
-        return new Transaction;
+        return new Transaction($data);
     }
 
     /**
@@ -293,30 +328,6 @@ class PayPalPayment
             $configManager->get('acct1.ClientSecret'));
 
         return $cred;
-    }
-
-    /**
-     * Get the base URL
-     * @return mixed
-     */
-    public function getBaseUrl()
-    {
-        return URL::to('/');
-    }
-
-    /**
-     * grape payment details using the paymentId
-     * @param $paymentId
-     * @param null $apiContext
-     * @return \PayPal\Api\Payment
-     */
-    public static function getById($paymentId, $apiContext = null)
-    {
-        if (isset($apiContext)) {
-            return Payment::get($paymentId, $apiContext);
-        }
-
-        return Payment::get($paymentId);
     }
 
     /**
