@@ -1,7 +1,8 @@
 <?php namespace Gonpre\PayPalPayment;
 
-use PayPal\Api\AgreementDetails;
 use PayPal\Api\Agreement;
+use PayPal\Api\AgreementDetails;
+use PayPal\Api\AgreementStateDescriptor;
 
 trait Agreement
 {
@@ -33,5 +34,13 @@ trait Agreement
     public function agreementDetails($data = null)
     {
         return new AgreementDetails($data);
+    }
+
+    /**
+     * @return \PayPal\Api\AgreementStateDescriptor
+     */
+    public function agreementStateDescriptor($data = null)
+    {
+        return new AgreementStateDescriptor($data);
     }
 }
