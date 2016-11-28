@@ -2,7 +2,7 @@
 
 use PayPal\Api\Patch;
 use PayPal\Api\PatchRequest;
-use PayPal\Api\Plan;
+use PayPal\Api\Plan as PPApiPlan;
 use PayPal\Common\PayPalModel;
 use PayPal\Rest\ApiContext;
 use PayPal\Transport\PayPalRestCall;
@@ -17,7 +17,7 @@ trait Plan
      */
     public function plan($data = null)
     {
-        return new Plan($data);
+        return new PPApiPlan($data);
     }
 
     /**
@@ -30,7 +30,7 @@ trait Plan
      */
     public function getPlan($planId, ApiContext $apiContext = null, PayPalRestCall $restCall = null)
     {
-        return Plan::get($planId, $apiContext, $restCall);
+        return PPApiPlan::get($planId, $apiContext, $restCall);
     }
 
     /**
