@@ -1,6 +1,6 @@
 <?php namespace Gonpre\PayPalPayment;
 
-use PayPal\Api\Agreement;
+use PayPal\Api\Agreement as PPApiAgreement;
 use PayPal\Api\AgreementDetails;
 use PayPal\Api\AgreementStateDescriptor;
 
@@ -12,7 +12,7 @@ trait Agreement
      */
     public function agreement($data = null)
     {
-        return new Agreement($data);
+        return new PPApiAgreement($data);
     }
 
     /**
@@ -25,7 +25,7 @@ trait Agreement
      */
     public function getAgreement($agreementId, $apiContext = null, $restCall = null)
     {
-        return Agreement::get($agreementId, $apiContext, $restCall);
+        return PPApiAgreement::get($agreementId, $apiContext, $restCall);
     }
 
     /**
